@@ -37,3 +37,7 @@ Este bloque es escrito y vuelto a añadir por `next dev`; puedes verificarlo en 
 
 - `/spec` Usaremos esta habilidad para crear las especificaciones.
 - `/spec-impl` Usaremos esta skill para hacer las implementaciones.
+
+## Reglas de código
+
+- Usar clean code: nombres, variables, funciones, etc. en inglés
