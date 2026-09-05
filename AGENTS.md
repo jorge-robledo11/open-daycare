@@ -37,6 +37,7 @@ Este bloque es escrito y vuelto a añadir por `next dev`; puedes verificarlo en 
 
 - `/spec` Usaremos esta habilidad para crear las especificaciones.
 - `/spec-impl` Usaremos esta skill para hacer las implementaciones.
+- `/spec-verifier` (`.opencode/agents/spec-verifier.md`) es el subagente que verifica los criterios de aceptación de una spec aprobada. Se invoca con `@spec-verifier verifica specs/NN-slug.md`. Revisa y corrige criterios ambiguos, valida las prácticas de Next.js con Context7, usa Playwright para las comprobaciones visuales (capturas en `.playwright-mcp/`), corrige el código mínimo si un criterio falla, marca los checks solo con evidencia y cambia el estado a `Implementado` cuando todos pasan. Usa el modelo con visión `opencode-go/deepseek-v4-flash-vision-exp` para comparar capturas.
 
 ## Reglas de código
 

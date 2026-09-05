@@ -1,6 +1,6 @@
 # SPEC 01 — Home del feed estático
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** —
 > **Fecha:** 2026-08-30
 > **Objetivo:** Replicar la plantilla `references/pantallas/feed.dc.html` como la página `/` (home) con estética idéntica, contenido estático y sin autenticación ni base de datos.
@@ -41,13 +41,13 @@ Cada paso deja el sistema compilable y ejecutable (`npm run dev`).
 
 ## Criterios de aceptación
 
-- [ ] `npm run lint` y `npm run build` pasan sin errores.
-- [ ] `/` muestra el feed con estética idéntica a `references/screenshots/feed.png` a `1200x800` (la captura es la fuente de verdad; el HTML de referencia manda para medidas y contenido).
-- [ ] En escritorio la barra lateral permanece fija mientras el feed se desplaza de forma independiente.
-- [ ] A `390x844` la pantalla se adapta: cabecera compacta, navegación lateral oculta y tarjetas del feed en una columna completa.
-- [ ] Las tres publicaciones (logro, actividad con foto, anuncio) reproducen textos, contadores y metadatos estáticos exactos.
-- [ ] Las fuentes Fredoka y Nunito se cargan y los títulos y el cuerpo usan la tipografía correspondiente.
-- [ ] Ningún botón o enlace navega ni modifica el estado de la página.
+- [x] `npm run lint` y `npm run build` pasan sin errores.
+- [x] `/` muestra el feed con estética idéntica a `references/screenshots/feed.png` a `1200x800` (la captura es la fuente de verdad; el HTML de referencia manda para medidas y contenido).
+- [x] En escritorio la barra lateral permanece fija mientras el feed se desplaza de forma independiente.
+- [x] A `390x844` la pantalla se adapta: cabecera compacta, navegación lateral oculta y tarjetas del feed en una columna completa.
+- [x] Las tres publicaciones (logro, actividad con foto, anuncio) reproducen textos, contadores y metadatos estáticos exactos.
+- [x] Las fuentes Fredoka y Nunito se cargan y los títulos y el cuerpo usan la tipografía correspondiente.
+- [x] Ningún botón o enlace navega ni modifica el estado de la página.
 
 ## Decisiones
 
