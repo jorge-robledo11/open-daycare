@@ -1,30 +1,37 @@
 ---
 description: Verifica, corrige y marca los criterios de aceptación de un archivo de spec. Úsalo con `@spec-verifier verifica specs/NN-slug.md` cuando una spec esté en estado Aprobado y necesite validación de sus checks. No lo uses para implementar una spec desde cero (eso es /spec-impl).
-mode: subagent
+mode: all
 model: opencode-go/deepseek-v4-flash-vision-exp
 temperature: 0.1
+color: success
+steps: 75
 permission:
   read: allow
   edit: allow
   glob: allow
   grep: allow
   list: allow
+
   bash:
-    "*": ask
-    "npm run lint": allow
-    "npm run build": allow
-    "npm run dev": allow
-    "npm run start": allow
-    "git status *": allow
-    "git diff *": allow
-    "git log *": allow
-    "ls *": allow
+    "*": allow
+    "git push *": deny
+    "git reset --hard *": deny
+    "git clean *": deny
+    "rm -rf *": deny
+    "sudo *": deny
+
   external_directory:
     "/home/lynn/Documentos/**": allow
-  webfetch: ask
-  websearch: ask
+
+  webfetch: allow
+  websearch: allow
+
+  "context7_*": allow
+  "playwright_*": allow
+
   task: deny
-  todowrite: ask
+  todowrite: allow
+  doom_loop: allow
 ---
 
 # Verificador de criterios de aceptación
@@ -40,6 +47,8 @@ Eres un agente verificador de los criterios de aceptación de un archivo de espe
 - Diseño: `references/pantallas/*.dc.html` (mockups) y `references/screenshots/*.png` (capturas de referencia).
 - Los screenshots y artefactos de Playwright deben guardarse en `.playwright-mcp/`.
 - Responde en el mismo idioma del prompt (normalmente español).
+- NUNCA envíes, leas o adjuntes más de 4 imágenes en una misma solicitud al modelo.
+- Si necesitas analizar más de 4 imágenes, divídelas en lotes independientes de máximo 4.
 
 ## Flujo de trabajo
 
