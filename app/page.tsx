@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import AppShell from "@/components/app-shell";
+import CreatePostDialog, { DEMO_NOTICE, POST_TYPES, RECIPIENTS, type NewPost } from "@/components/create-post-dialog";
 
 const POSTS = [
   {
@@ -52,8 +56,62 @@ const POSTS = [
 ];
 
 export default function Home() {
+  const [addedPosts, setAddedPosts] = useState<NewPost[]>([]);
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const composerTriggerRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const publishedUrls = useRef(new Set<string>());
+
+  useEffect(() => {
+    const urls = publishedUrls.current;
+    function openFromHash() {
+      if (window.location.hash !== "#new-post") return;
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      returnFocusRef.current = composerTriggerRef.current;
+      setIsComposerOpen(true);
+    }
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
+    return () => {
+      window.removeEventListener("hashchange", openFromHash);
+      urls.forEach((url) => URL.revokeObjectURL(url));
+      urls.clear();
+    };
+  }, []);
+
+  function openComposer(event: React.MouseEvent<HTMLButtonElement>) {
+    returnFocusRef.current = event.currentTarget;
+    setIsComposerOpen(true);
+  }
+
+  const posts = [
+    ...addedPosts.map((post) => {
+      const isRoom = post.recipients.includes("room");
+      const recipient = RECIPIENTS[post.recipients.length === 1 ? post.recipients[0] : "room"];
+      const names = new Intl.ListFormat("es", { type: "conjunction" }).format(post.recipients.map((key) => RECIPIENTS[key].name));
+      const postType = POST_TYPES[post.type];
+      return {
+        ...recipient,
+        name: names,
+        id: post.id,
+        meta: `${post.createdAt.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit", hour12: false })} · publicado por vos`,
+        badgeBg: postType.bg,
+        badgeDot: postType.dot,
+        badgeColor: postType.color,
+        badge: postType.label.toLocaleUpperCase("es"),
+        audience: isRoom ? "Para: toda la sala" : `Para: ${post.recipients.length === 1 ? "familia" : "familias"} de ${names}`,
+        body: post.description,
+        likes: 0,
+        comments: 0,
+        photo: null,
+        photos: post.photos,
+      };
+    }),
+    ...POSTS.map((post) => ({ ...post, id: post.name + post.meta, photos: [] })),
+  ];
+
   return (
-    <AppShell active="feed">
+    <AppShell active="feed" onCreatePost={openComposer}>
       <div className="mx-auto w-full max-w-[760px] px-4 pb-20 pt-4 md:px-10 md:pt-[34px]">
           <div className="mb-6">
             <div className="mb-1 text-[12.5px] font-extrabold tracking-[0.8px] text-[#D9583C]">
@@ -65,7 +123,7 @@ export default function Home() {
             <p className="mt-[5px] text-[14.5px] text-[#94887B]">12 niños · martes 17 jun</p>
           </div>
 
-          <a className="mb-6 flex items-center gap-[14px] rounded-[18px] border border-[#ECE0D0] bg-[#FFFDF9] px-[18px] py-[14px] shadow-[0_4px_14px_-10px_rgba(120,90,60,0.4)]">
+          <button ref={composerTriggerRef} type="button" onClick={openComposer} className="mb-6 flex w-full cursor-pointer items-center gap-[14px] rounded-[18px] border border-[#ECE0D0] bg-[#FFFDF9] px-[18px] py-[14px] text-left shadow-[0_4px_14px_-10px_rgba(120,90,60,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D9583C]">
             <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#F2937A] font-fredoka text-[16px] font-semibold text-white">
               C
             </div>
@@ -85,7 +143,9 @@ export default function Home() {
                 <circle cx="12" cy="13" r="4" />
               </svg>
             </span>
-          </a>
+          </button>
+
+          <p className="mb-6 text-[13px] leading-[1.45] text-[#94887B]">{DEMO_NOTICE}</p>
 
           <div className="mb-[14px] flex items-center gap-[14px]">
             <span className="text-[12.5px] font-extrabold tracking-[0.8px] text-[#8A7C6D]">
@@ -95,9 +155,9 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-4">
-            {POSTS.map((post) => (
+            {posts.map((post) => (
               <article
-                key={post.name + post.meta}
+                key={post.id}
                 className="rounded-[20px] border border-[#ECE0D0] bg-[#FFFDF9] px-[22px] py-5 shadow-[0_4px_16px_-12px_rgba(120,90,60,0.5)]"
               >
                 <div className="mb-[14px] flex items-center gap-3">
@@ -121,14 +181,14 @@ export default function Home() {
                       </svg>
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1 break-words">
                     <div className="font-fredoka text-[16.5px] font-semibold text-[#3F362E]">
                       {post.name}
                     </div>
                     <div className="text-[12.5px] text-[#A89A8B]">{post.meta}</div>
                   </div>
                   <div
-                    className={`flex items-center gap-[7px] rounded-full px-3 py-[6px] ${post.badgeBg}`}
+                    className={`flex flex-none items-center gap-[7px] rounded-full px-3 py-[6px] ${post.badgeBg}`}
                   >
                     <span className={`h-2 w-2 rounded-full ${post.badgeDot}`} />
                     <span className={`text-[12px] font-extrabold tracking-[0.5px] ${post.badgeColor}`}>
@@ -138,7 +198,16 @@ export default function Home() {
                 </div>
 
                 <div className="mb-[10px] text-[12.5px] text-[#A89A8B]">{post.audience}</div>
-                <p className="m-0 text-[15.5px] leading-[1.55] text-[#4A4038]">{post.body}</p>
+                <p className="m-0 whitespace-pre-wrap break-words text-[15.5px] leading-[1.55] text-[#4A4038]">{post.body}</p>
+
+                {post.photos.length > 0 && (
+                  <div className="mt-[14px] grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {post.photos.map((photo) => (
+                      // eslint-disable-next-line @next/next/no-img-element -- Local blob URLs are not server-optimized images.
+                      <img key={photo.id} src={photo.url} alt={photo.name} width={640} height={480} className="aspect-[4/3] h-auto w-full rounded-[16px] border border-[#ECE0D0] bg-[#F4ECE1] object-contain" />
+                    ))}
+                  </div>
+                )}
 
                 {post.photo && (
                   <a className="mt-[14px] flex h-[200px] flex-col items-center justify-center gap-2 rounded-[16px] border-[1.5px] border-dashed border-[#DBCDBA] bg-[#F4ECE1] text-[#B0A290]">
@@ -198,6 +267,13 @@ export default function Home() {
             ))}
           </div>
       </div>
+      {isComposerOpen && <CreatePostDialog onClose={() => {
+        setIsComposerOpen(false);
+        returnFocusRef.current?.focus();
+      }} onPublish={(post) => {
+        post.photos.forEach((photo) => publishedUrls.current.add(photo.url));
+        setAddedPosts((previous) => [post, ...previous]);
+      }} />}
     </AppShell>
   );
 }

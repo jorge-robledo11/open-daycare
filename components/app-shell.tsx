@@ -71,7 +71,12 @@ function Brand() {
   );
 }
 
-export default function AppShell({ active, children }: { active: NavKey; children: React.ReactNode }) {
+export default function AppShell({ active, children, onCreatePost }: { active: NavKey; children: React.ReactNode; onCreatePost?: React.MouseEventHandler<HTMLButtonElement> }) {
+  const createPostClassName = "mb-[18px] flex w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-3 py-3 text-[14.5px] font-extrabold text-white! shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D9583C]";
+  const createPostContent = <>
+    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+    Nueva publicación
+  </>;
   return (
     <div className="flex min-h-screen bg-[#F6ECDF] text-[#3F362E]">
       <aside className="sticky top-0 hidden h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] px-4 py-6 leading-[normal] md:flex">
@@ -79,21 +84,11 @@ export default function AppShell({ active, children }: { active: NavKey; childre
           <Brand />
         </Link>
 
-        <a className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-3 py-3 text-[14.5px] font-extrabold text-white! shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]">
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#fff"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          Nueva publicación
-        </a>
+        {onCreatePost ? (
+          <button type="button" onClick={onCreatePost} className={createPostClassName}>{createPostContent}</button>
+        ) : (
+          <Link href="/#new-post" scroll={false} className={createPostClassName}>{createPostContent}</Link>
+        )}
 
         <nav className="flex flex-1 flex-col gap-1">
           {NAV_ITEMS.map((item) => {
