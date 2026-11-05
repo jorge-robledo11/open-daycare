@@ -74,12 +74,12 @@ function Brand() {
 export default function AppShell({ active, children }: { active: NavKey; children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-[#F6ECDF] text-[#3F362E]">
-      <aside className="sticky top-0 hidden h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] px-4 py-6 md:flex">
+      <aside className="sticky top-0 hidden h-screen w-[248px] flex-none flex-col border-r border-[#ECE0D0] bg-[#FFFDF9] px-4 py-6 leading-[normal] md:flex">
         <Link className="flex items-center gap-[11px] px-2 pb-[22px] pt-1" href="/">
           <Brand />
         </Link>
 
-        <a className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-3 py-3 text-[14.5px] font-extrabold text-white shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]">
+        <a className="mb-[18px] flex w-full items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(180deg,#F4977E,#EE8164)] px-3 py-3 text-[14.5px] font-extrabold text-white! shadow-[0_8px_18px_-8px_rgba(238,129,100,0.75)]">
           <svg
             width="17"
             height="17"
@@ -99,8 +99,8 @@ export default function AppShell({ active, children }: { active: NavKey; childre
           {NAV_ITEMS.map((item) => {
             const isActive = item.key === active;
             const className = isActive
-              ? "flex items-center gap-3 rounded-xl bg-[#FBE3D8] px-3 py-[11px] text-[14.5px] font-extrabold text-[#D9583C]"
-              : "flex items-center gap-3 rounded-xl px-3 py-[11px] text-[14.5px] font-semibold text-[#6E6359]";
+              ? "flex items-center gap-3 rounded-xl bg-[#FBE3D8] px-3 py-[11px] text-[14.5px] font-extrabold text-[#D9583C]!"
+              : "flex items-center gap-3 rounded-xl px-3 py-[11px] text-[14.5px] font-semibold text-[#6E6359]!";
             const inner = (
               <>
                 <svg
@@ -139,7 +139,7 @@ export default function AppShell({ active, children }: { active: NavKey; childre
               <div className="text-[14px] font-extrabold text-[#3F362E]">Caro Giménez</div>
               <div className="text-[12px] text-[#A89A8B]">Maestra · Soles</div>
             </div>
-            <a className="flex h-8 w-8 flex-none items-center justify-center rounded-[10px] bg-[#F6ECDF] text-[#94887B]">
+            <a className="flex h-8 w-8 flex-none items-center justify-center rounded-[10px] bg-[#F6ECDF] text-[#94887B]!">
               <svg
                 width="16"
                 height="16"
