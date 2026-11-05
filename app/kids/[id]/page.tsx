@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AppShell from "@/components/app-shell";
+import LinkedParents from "@/components/linked-parents";
 
 export default async function KidProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -105,54 +106,7 @@ export default async function KidProfilePage({ params }: { params: Promise<{ id:
               </svg>
               Resumen del día
             </a>
-            <div className="rounded-[16px] border border-[#ECE0D0] bg-[#FFFDF9] px-[18px] py-4">
-              <div className="mb-[14px] text-[12.5px] font-extrabold tracking-[0.8px] text-[#8A7C6D]">
-                PADRES VINCULADOS
-              </div>
-              <div className="flex flex-col gap-[14px]">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#C9B6E8] font-fredoka text-[16px] font-semibold text-white">
-                    L
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[14.5px] font-extrabold text-[#3F362E]">Lucía Fernández</div>
-                    <div className="text-[12.5px] text-[#A89A8B]">Mamá · activa</div>
-                  </div>
-                  <span className="flex-none rounded-full bg-[#CFEBD8] px-[9px] py-[4px] text-[10.5px] font-extrabold text-[#3E9B6C]">
-                    ACTIVA
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-[#A9C7E8] font-fredoka text-[16px] font-semibold text-white">
-                    D
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[14.5px] font-extrabold text-[#3F362E]">Diego Fernández</div>
-                    <div className="text-[12.5px] text-[#A89A8B]">Papá · invitación enviada</div>
-                  </div>
-                  <span className="flex-none rounded-full bg-[#F7E7A6] px-[9px] py-[4px] text-[10.5px] font-extrabold text-[#9A7B1E]">
-                    PENDIENTE
-                  </span>
-                </div>
-                <a className="flex items-center gap-3 pt-2">
-                  <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-dashed border-[#D8CBBA] text-[#B0A290]">
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
-                  <span className="text-[14.5px] font-extrabold text-[#C5503A]">Vincular otro padre</span>
-                </a>
-              </div>
-            </div>
+            <LinkedParents />
           </div>
         </div>
       </div>
