@@ -32,6 +32,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Playwright: los screenshots y cualquier cosa relacionada con Playwright deben estar en el directorio `.playwright-mcp`.
 - Context7: usarlo para obtener la documentación actualizada del framework.
+- Supabase: MCP remoto configurado globalmente en `~/.config/opencode/opencode.json`, asociado al proyecto `ngfqsfyhpjgezpbpguzs`. Usa OAuth; gestionar la conexión y el inicio de sesión desde `/mcps` en OpenCode. No guardar tokens ni secretos en el repositorio.
+
+## Supabase y skills
+
+- `supabase` (`.agents/skills/supabase/SKILL.md`): cargarla para cualquier tarea relacionada con Supabase (Database, Auth, Storage, Realtime, Edge Functions, CLI o MCP). Consultar la documentación actualizada antes de implementar.
+- `supabase-postgres-best-practices` (`.agents/skills/supabase-postgres-best-practices/SKILL.md`): cargarla antes de crear o modificar esquemas, SQL, migraciones, índices, funciones o políticas RLS, y al diagnosticar problemas de rendimiento o acceso a datos.
+- Antes de modificar el esquema, inspeccionar las tablas existentes. Preferir desarrollo y pruebas locales; las operaciones del MCP afectan al proyecto remoto.
+- Habilitar RLS en las tablas de esquemas expuestos y definir políticas según el modelo de acceso. Nunca exponer claves secretas o `service_role` al cliente.
+- Al depurar, revisar logs y avisos de seguridad y rendimiento antes de cambiar código o datos. Verificar los cambios con pruebas o consultas apropiadas.
 
 ## Spec Driven Development
 
