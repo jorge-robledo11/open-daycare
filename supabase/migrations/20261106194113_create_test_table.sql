@@ -1,0 +1,6 @@
+CREATE TABLE public.test_table (
+  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  name text NOT NULL
+);
+
+ALTER TABLE public.test_table ENABLE ROW LEVEL SECURITY;

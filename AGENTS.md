@@ -42,6 +42,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Habilitar RLS en las tablas de esquemas expuestos y definir políticas según el modelo de acceso. Nunca exponer claves secretas o `service_role` al cliente.
 - Al depurar, revisar logs y avisos de seguridad y rendimiento antes de cambiar código o datos. Verificar los cambios con pruebas o consultas apropiadas.
 
+### Migraciones obligatorias
+
+- Todo cambio persistente en la base de datos realizado por el agente debe quedar en una migración SQL versionada dentro de `supabase/migrations/`, antes de aplicarse. Incluye crear, modificar o eliminar tablas, columnas, restricciones, índices, funciones, triggers, políticas RLS y permisos, así como insertar, actualizar o eliminar datos manualmente, incluidos registros iniciales o de prueba que vayan a conservarse.
+- Generar cada archivo con `npx supabase migration new <name>`, escribir las queries con la convención SQL del proyecto y aplicar mediante Supabase CLI. No ejecutar cambios persistentes directamente por MCP, SQL Editor o consultas sueltas que eludan el historial de migraciones.
+- Antes de aplicar, inspeccionar el estado actual, comparar el historial local/remoto, confirmar el proyecto de destino y revisar `db push --dry-run`. Después, verificar el resultado y que no queden migraciones pendientes. Seguir el flujo de `supabase/README.md`.
+- Las consultas de solo lectura no requieren migración. Las pruebas transaccionales que revierten todos sus cambios con `ROLLBACK` tampoco; no deben dejar datos ni cambios de esquema persistentes.
+- No editar la lógica de migraciones aplicadas ni reparar o borrar historial para ocultar divergencias. Cualquier corrección persistente se realiza mediante una nueva migración.
+
 ## Spec Driven Development
 
 - `/spec` Usaremos esta habilidad para crear las especificaciones.
@@ -51,3 +59,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Reglas de código
 
 - Usar clean code: nombres, variables, funciones, etc. en inglés
+
+### Convención SQL
+
+- Escribir palabras clave y comandos SQL en MAYÚSCULAS: `SELECT`, `FROM`, `WHERE`, `CREATE TABLE`, `CREATE POLICY`, `GRANT`, `NOT NULL`, `DEFAULT`, `USING`, etc. Aplicar también a las palabras clave de PL/pgSQL.
+- Usar identificadores en inglés y `snake_case`; mantener tipos y funciones en minúsculas (`uuid`, `text`, `timestamptz`, `auth.jwt()`, `now()`). No modificar literales de texto ni claves JSON para cambiar su capitalización.
+- Separar las cláusulas principales en líneas e incluir punto y coma al final de cada sentencia. Esta regla aplica al SQL de migraciones, pruebas y ejemplos de documentación.
+- No cambiar la lógica de migraciones ya aplicadas; cualquier cambio de estructura, permisos o datos debe ir en una nueva migración versionada. Reformatear archivos históricos solo con autorización explícita, sin alterar su semántica, versiones o historial remoto ni volver a ejecutarlos.
+
+```sql
+SELECT id, name, created_at
+FROM public.daycares;
+```
